@@ -1,2 +1,4 @@
 node_modules/*
+dist/*
 testIgnore/*
+package-lock.json

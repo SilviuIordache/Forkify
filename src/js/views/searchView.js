@@ -25,7 +25,7 @@ acc: 18 // acc+.cur.length = 24 / newTitle = ['Pasta', 'with', 'tomato'];
 
 const limitRecipeTitle = (title, limit = 18) => {
   const newTitle = [];
-  if(title.length > limit) {
+  if (title.length > limit) {
     title.split(' ').reduce((acc, cur) => {
       if (acc + cur.length <= limit) {
         newTitle.push(cur);
@@ -57,6 +57,49 @@ const renderRecipe = recipe => {
   elements.searchResList.insertAdjacentHTML('beforeend', markup);
 };
 
-export const renderResults = recipes => {
-  recipes.forEach(renderRecipe);
+
+// type: 'prev' or 'next'
+const createButton = (page, type) => `
+<button class="btn-inline results__btn--${type}">
+  <svg class="search__icon">
+    <use href="img/icons.svg#icon-triangle-${type === 'prev' ? left : right}"></use>
+  </svg>
+  <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
+
+</button>
+<!--
+                <button class="btn-inline results__btn--prev">
+                    <svg class="search__icon">
+                        <use href="img/icons.svg#icon-triangle-left"></use>
+                    </svg>
+                    <span>Page 1</span>
+                </button>
+                <button class="btn-inline results__btn--next">
+                    <span>Page 3</span>
+                    <svg class="search__icon">
+                        <use href="img/icons.svg#icon-triangle-right"></use>
+                    </svg>
+                </button>
+                -->
+`;
+
+const renderButtons = (page, numResults, resPerPage) => {
+  const pages = Math.ceil(numResults / resPerPage);
+
+  if (page === 1 && pages > 1) {
+    // only button to go to the next page
+  } else if (page < pages) {
+    // both buttons
+  } else if (page === pages && pages > 1) {
+    // only button to go to the prev page
+  }
+
+};
+
+
+export const renderResults = (recipes, page = 1, resPerPage = 10) => {
+  const start = (page - 1) * resPerPage;
+  const end = page * resPerPage;
+
+  recipes.slice(start, end).forEach(renderRecipe);
 };
